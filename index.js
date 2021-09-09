@@ -20,11 +20,15 @@ const exampleProducts = [
 */
 function getCartTotal(cart) {
   let result = 0;
-  for (let product of cart) {
-    result += product.priceInCents;
+  if(!cart.length){
+   throw "Cart is empty";
   }
+  for (let product of cart) {
+   result += product.priceInCents;
+  } 
   return result;
 }
+
 
 /*
   This function should throw an error if:
@@ -37,7 +41,23 @@ function getCartTotal(cart) {
 */
 function filterProductsByPriceRange(products, min, max) {
   const result = [];
+  if(!products.length){
+    throw "Product empty";
+  }
+
+  if(typeof min !== "number" || typeof max !== "number"){
+    throw "there is not a number";
+  }
+  
+  if(min <= 0 || max <= 0){
+    throw "Min and Max is error of less of 0";
+  }
+
   for (let product of products) {
+    if(!product.priceInCents){
+      throw "error"
+    }
+
     if (product.priceInCents >= min && product.priceInCents <= max) {
       result.push(product);
     }
@@ -49,11 +69,16 @@ function filterProductsByPriceRange(products, min, max) {
   If any errors occur in this function, it should return `0`.
 */
 function getTotalOfAllProductsByPriceRange(products, min, max) {
-  const filteredProducts = filterProductsByPriceRange(products, min, max);
-  const total = getCartTotal(filteredProducts);
+  try {
+const filteredProducts = filterProductsByPriceRange(products, min, max);
+const total = getCartTotal(filteredProducts);
 
-  return total;
+return total;
+}catch (error){
+  return 0;
 }
+}
+
 
 module.exports = {
   getCartTotal,
